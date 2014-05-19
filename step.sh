@@ -2,7 +2,7 @@
 # @Author: Tamas Szucs
 # @Date:   2014-05-19 10:39:46
 # @Last Modified by:   Tamas Szucs
-# @Last Modified time: 2014-05-19 17:22:13
+# @Last Modified time: 2014-05-19 17:49:07
 
 echo "$ cd $CONCRETE_SOURCE_DIR"
 
@@ -13,9 +13,15 @@ cd "$CONCRETE_SOURCE_DIR"
 # default should be ant with 'android update ....' command
 
 ant clean
-# TODO get target sdk version from .manifest file
+# TODO check if androidmanifest name can change?
+sdk_ver="android-$(grep -ro '<uses-sdk[ \t].*android:targetSdkVersion="[^"]*"' AndroidManifest.xml \
+	| grep -o 'android:targetSdkVersion="[^"]*"' | cut -f2 -d'"' )"
+
+echo "SDK VER"
+echo $sdk_ver
+
 # --target 1 is the id from 'android list targets'
-android update project --path . --target 1
+android update project --path . --target 
 
 # TODO reference other libraries http://blog.standalonecode.com/?p=269
 
