@@ -56,10 +56,10 @@ export M2=$M2_HOME/bin
 export PATH=$M2:$PATH
 
 
-maven & gradle-nel nincs only build egybol deploy is lesz belole (APK keszul)
+gradle-nel nincs only build egybol deploy is lesz belole (APK keszul ??)
 
 
-——— ANT BUILD ———
+— ANT BUILD ———
 
 Projektnel:
 target megfelelo beallitasa v az elvart SDK-nak fenn kell lennie - mostmar telepiti a szkript ha nincs fenn
@@ -72,17 +72,15 @@ Analyze alapbol nincs benne, Sonar Ant Task-kal lehet
 http://frommyworkshop.blogspot.hu/2011/04/analyse-with-ant-sonar-way.html
 
 
-adt
-ant tool
 
 TODO Ivy support?
 
 
-———— GRADLE BUILD ——————
+— GRADLE BUILD ——————
 
 based on: http://www.vogella.com/tutorials/AndroidBuild/article.html
 
------- MAVEN BUILD ----------
+- MAVEN BUILD ----------
 based on: http://www.vogella.com/tutorials/AndroidBuildMaven/article.html
 
 +
@@ -90,10 +88,16 @@ based on: http://www.vogella.com/tutorials/AndroidBuildMaven/article.html
 
 -- NDK build : http://stackoverflow.com/questions/7432449/android-ndk-build-with-ant-script
 
+Android NDKt kulon le kell szedni hozza
+http://lolengine.net/blog/2011/3/11/build-run-android-ndk-without-eclipse
+ant-tal kulon parancs - ha nincs build.xml, amugy maven, gradle config fajlokba beepitheto
 
-—— APP SIGNING ———
-keytool
-http://developer.android.com/tools/publishing/app-signing.html
+
+— APP SIGNING ———
+	build system specifikusan is megadhato
+
+	keytool
+	http://developer.android.com/tools/publishing/app-signing.html
 
 
 		keytool -genkey -v -keystore my-release-key.keystore
