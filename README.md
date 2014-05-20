@@ -19,12 +19,13 @@ steps-eclipse-builder
 ---------------------------------------
 
 
-xcode schema =~ build system specifikus config file (default ant-nal: build.xml) TODO automatic transformation
+xcode schema =~ build system specifikus config file (default ant-nal: build.xml, maven: pom.xml, gradle: build.gradle) 
+eclipse config kulon (?)
 
 
 
 
-virtualis gep fellovesekor erdemes lehet + idonkent: android update sdk --no-ui --all --force
+virtualis gep fellovesekor erdemes lehet + idonkent: __android update sdk --no-ui --all --force --filter tool,platform-tool__
 TODO csak az SDKt rakja fel, sample meg ilyeneket ne
 
 
