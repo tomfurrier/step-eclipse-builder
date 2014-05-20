@@ -1,1 +1,5 @@
 set_env_vars.sh
+taskArtifacts.bin
+cache.properties.lock
+cache.properties
+fileSnapshots.bin

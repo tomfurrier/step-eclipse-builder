@@ -2,7 +2,7 @@
 # @Author: Tamas Szucs
 # @Date:   2014-05-19 10:39:46
 # @Last Modified by:   Tamas Szucs
-# @Last Modified time: 2014-05-20 14:08:42
+# @Last Modified time: 2014-05-20 17:07:58
 
 echo "$ cd $CONCRETE_SOURCE_DIR"
 
@@ -13,7 +13,13 @@ cd "$CONCRETE_SOURCE_DIR"
 if [[ ! $CONCRETE_ACTION ]]; then
 	CONCRETE_ACTION="BUILD"
 fi
-echo $CONCRETE_ACTION
+
+if [[ $CONCRETE_ACTION -ne "BUILD" &&  $CONCRETE_ACTION -ne "DEBUG" && $CONCRETE_ACTION -ne "RELEASE" && $CONCRETE_ACTION -ne "ANALYZE" ]]; then
+	echo "Error: not a valid CONCRETE_ACTION value: $CONCRETE_ACTION. Terminating..."
+	echo "export CONCRETE_BUILD_STATUS=\"failed\"" >> ~/.bash_profile
+	echo "CONCRETE_BUILD_STATUS=\"failed\""
+	exit 1
+fi
 
 # upgraded - passed as parameter, check against its value instead 
 # of setting multiple env vars
@@ -28,7 +34,16 @@ echo "CONCRETE_ACTION: $CONCRETE_ACTION"
 if [[ ! $CONCRETE_BUILD_TOOL ]]; then
 	CONCRETE_BUILD_TOOL="ant"
 fi
+
+if [[ $CONCRETE_BUILD_TOOL -ne "ant" &&  $CONCRETE_BUILD_TOOL -ne "gradle" && $CONCRETE_BUILD_TOOL -ne "maven" ]]; then
+	echo "Error: not a valid CONCRETE_BUILD_TOOL value: $CONCRETE_BUILD_TOOL. Terminating..."
+	echo "export CONCRETE_BUILD_STATUS=\"failed\"" >> ~/.bash_profile
+	echo "CONCRETE_BUILD_STATUS=\"failed\""
+	exit 1
+fi
+
 echo "CONCRETE_BUILD_TOOL: $CONCRETE_BUILD_TOOL"
+
 
 
 # ant initializations
@@ -41,7 +56,7 @@ if [[ $CONCRETE_BUILD_TOOL == "ant" ]]; then
 
 	echo "SDK version=$sdk_ver"
 
-	creates build.xml and local.properties required by ant
+	# creates build.xml and local.properties required by ant
 	android update project --path . --target $sdk_ver
 	update_result=$?
 
@@ -53,7 +68,6 @@ if [[ $CONCRETE_BUILD_TOOL == "ant" ]]; then
 	fi
 
 	# TODO reference other libraries http://blog.standalonecode.com/?p=269
-
 fi
 
 #################
@@ -64,8 +78,11 @@ if [[ $CONCRETE_ACTION == "BUILD" ]]; then
 	# if only build
 	if [[ $CONCRETE_BUILD_TOOL == "ant" ]]; then
 		ant
-	else
+	elif [[ $CONCRETE_BUILD_TOOL == "gradle" ]]; then
 		gradle clean build
+		# TODO not working, editing gradle-wrapper.properties doesnt work
+	elif [[ $CONCRETE_BUILD_TOOL == "gradle" ]]; then
+		mvn clean compile
 	fi
 	
 	action_result=$?
@@ -83,8 +100,11 @@ elif [[ $CONCRETE_ACTION == "DEBUG" ]]; then
 	# creating aligned and debug signed apk
 	if [[ $CONCRETE_BUILD_TOOL == "ant" ]]; then
 		ant debug
-	else
+	elif [[ $CONCRETE_BUILD_TOOL == "gradle" ]]; then
 		gradle clean build
+		# TODO not working, editing gradle-wrapper.properties doesnt work
+	elif [[ $CONCRETE_BUILD_TOOL == "maven" ]]; then
+		mvn clean package
 	fi
 
 	action_result=$?
@@ -100,8 +120,14 @@ elif [[ $CONCRETE_ACTION == "DEBUG" ]]; then
 elif [[ $CONCRETE_ACTION == "RELEASE" ]]; then
 	# TODO
 	# create unsigned and unaligned APK, need to be aligned and signed manually
-	echo "Action currently not supported! Terminating..."
-	exit 1
+	if [[ $CONCRETE_BUILD_TOOL == "ant" ]]; then
+		ant release
+	elif [[ $CONCRETE_BUILD_TOOL == "gradle" ]]; then
+		#gradle clean build
+		echo 'TODO not working, editing gradle-wrapper.properties doesnt work'
+	elif [[ $CONCRETE_BUILD_TOOL == "maven" ]]; then
+		mvn clean package
+	fi
 
 elif [[ $CONCRETE_ACTION == "ANALYZE" ]]; then
 	# TODO
