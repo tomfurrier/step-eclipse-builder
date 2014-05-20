@@ -92,6 +92,7 @@ Android NDKt kulon le kell szedni hozza
 http://lolengine.net/blog/2011/3/11/build-run-android-ndk-without-eclipse
 ant-tal kulon parancs - ha nincs build.xml, amugy maven, gradle config fajlokba beepitheto
 
+ANDROID_NDK_HOME, ANDROID_NDK_ROOT env variablek is kellenek (build toolok kulonbozo neven tallajak meg oket)!!! 
 
 — APP SIGNING ———
 	build system specifikusan is megadhato
